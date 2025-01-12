@@ -3,15 +3,27 @@ import { USER_ROLES } from '../../../enums/user';
 
 export type IUser = {
   role: USER_ROLES;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   address: string;
   password: string;
+  age: number;
+  country: string;
+  height: number;
+  weight: number;
+  gender: string;
+  fitnessLevel: string;
   status: 'active' | 'suspended' | 'deleted';
   verified: boolean;
   phone: string;
   image: string;
+  workouts: [Types.ObjectId];
+  nutritions: [Types.ObjectId];
+  progress: [Types.ObjectId];
+  goals: [Types.ObjectId];
+  subscriptions: [Types.ObjectId];
+  consultations: [Types.ObjectId];
+  chats: [Types.ObjectId];
 
   appId?: string;
   fcmToken?: string;

@@ -10,7 +10,7 @@ const createUser = catchAsync(
       ...req.body,
     };
 
-    await UserService.createClientToDB(value);
+    await UserService.createUserToDB(value);
 
     sendResponse(res, {
       success: true,
@@ -20,13 +20,13 @@ const createUser = catchAsync(
     });
   }
 );
-const createDriverToDB = catchAsync(
+const createAdmin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const value = {
       ...req.body,
     };
 
-    await UserService.createDriverToDB(value);
+    await UserService.createAdminToDB(value);
 
     sendResponse(res, {
       success: true,
@@ -92,5 +92,5 @@ export const UserController = {
   getUserProfile,
   updateProfile,
   getSingleUser,
-  createDriverToDB,
+  createAdmin,
 };

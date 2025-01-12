@@ -13,7 +13,7 @@ import { IClient } from '../client/client.interface';
 import { Client } from '../client/client.model';
 import { Driver } from '../driver/driver.model';
 
-const createClientToDB = async (payload: Partial<IUser & IClient>) => {
+const createUserToDB = async (payload: Partial<IUser & IClient>) => {
   // const createClientToDB = async (payload: Partial<IUser>) => {
   const session = await startSession();
 
@@ -111,7 +111,7 @@ const createClientToDB = async (payload: Partial<IUser & IClient>) => {
   }
 };
 // const createDriverToDB = async (payload: Partial<IUser & IClient>) => {
-const createDriverToDB = async (payload: Partial<IUser>) => {
+const createAdminToDB = async (payload: Partial<IUser>) => {
   const session = await startSession();
 
   try {
@@ -255,8 +255,8 @@ const getSingleUser = async (id: string): Promise<IUser | null> => {
 
 export const UserService = {
   getUserProfileFromDB,
-  createDriverToDB,
+  createAdminToDB,
   updateProfileToDB,
   getSingleUser,
-  createClientToDB,
+  createUserToDB,
 };
