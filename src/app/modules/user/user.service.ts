@@ -34,7 +34,7 @@ const createUserToDB = async (payload: Partial<IUser & IClient>) => {
     const userPayload = {
       email: payload.email,
       password: payload.password,
-      role: USER_ROLES.CLIENT, // Initially set role as CLIENT
+      role: USER_ROLES.USER, // Initially set role as CLIENT
     };
 
     // Create user
