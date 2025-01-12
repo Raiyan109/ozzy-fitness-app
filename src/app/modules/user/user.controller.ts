@@ -9,6 +9,7 @@ const createUser = catchAsync(
     const value = {
       ...req.body,
     };
+    console.log(value, 'value from createUser');
 
     await UserService.createUserToDB(value);
 
@@ -25,6 +26,7 @@ const createAdmin = catchAsync(
     const value = {
       ...req.body,
     };
+
 
     await UserService.createAdminToDB(value);
 

@@ -7,14 +7,14 @@ import auth from '../../middlewares/auth';
 const router = express.Router();
 
 router.post(
-  '/create-client',
+  '/create-user',
   validateRequest(UserValidation.createUserZodSchema),
   UserController.createUser
 );
 router.post(
-  '/create-driver',
+  '/create-admin',
   validateRequest(UserValidation.createUserZodSchema),
-  UserController.createDriverToDB
+  UserController.createAdmin
 );
 
 router.get(
