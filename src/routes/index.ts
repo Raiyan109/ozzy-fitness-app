@@ -5,6 +5,7 @@ import { ClientRoutes } from '../app/modules/client/client.route';
 import { MessageRoutes } from '../app/modules/message/message.route';
 import { ConversationRoutes } from '../app/modules/conversation/conversation.route';
 import { SubscriptionRoutes } from '../app/modules/subsription/subsription.route';
+import { ChatRoutes } from '../app/modules/chat/chat.route';
 
 
 const router = express.Router();
@@ -16,6 +17,7 @@ const apiRoutes = [
   { path: '/message', route: MessageRoutes },
   { path: '/conversation', route: ConversationRoutes },
   { path: '/subscription', route: SubscriptionRoutes },
+  { path: '/chat', route: ChatRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));
