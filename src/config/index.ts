@@ -7,6 +7,7 @@ export default {
   database_url: process.env.DATABASE_URL,
   node_env: process.env.NODE_ENV,
   port: process.env.PORT,
+  base_url: process.env.BASE_URL,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   stripe_api_secret: process.env.STRIPE_SECRET_KEY,
   google_maps: process.env.GOOGLE_MAPS,

@@ -1,3 +1,4 @@
+import config from "../../../config";
 import { stripe } from "../../../shared/stripe";
 
 const createSubscriptionIntoDB = async (plan: string) => {
@@ -26,14 +27,21 @@ const createSubscriptionIntoDB = async (plan: string) => {
                 quantity: 1
             }
         ],
-        success_url: "http://localhost:3000/success",
-        cancel_url: `http://localhost:3000/`
+        success_url: `${config.base_url}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${config.base_url}/cancel`
     })
 
     return session
 };
 
 
+const getSubscriptionFromDB = async (session_id: string) => {
+    const session = await stripe.checkout.sessions.retrieve(session_id, { expand: ['subscription', 'subscription.plan.product'] })
+    console.log(JSON.stringify(session));
+    return session
+}
+
 export const subscriptionService = {
-    createSubscriptionIntoDB
+    createSubscriptionIntoDB,
+    getSubscriptionFromDB
 };

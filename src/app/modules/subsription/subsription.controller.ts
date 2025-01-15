@@ -22,6 +22,27 @@ const createSubscription = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSubscription = catchAsync(async (req: Request, res: Response) => {
+  const { session_id } = req.query
+  console.log(session_id, 'session id from getSubscription');
+  if (!session_id) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      success: false,
+      message: "Session ID is required.",
+    });
+  }
+
+  const result = await subscriptionService.getSubscriptionFromDB(session_id as string)
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription retrieved successfully',
+    data: result,
+  });
+});
+
 export const SubscriptionControllers = {
-  createSubscription
+  createSubscription,
+  getSubscription
 }

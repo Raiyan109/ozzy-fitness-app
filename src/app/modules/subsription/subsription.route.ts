@@ -5,5 +5,6 @@ import { SubscriptionControllers } from './subsription.controller';
 const router = express.Router();
 
 router.post('/subscribe', SubscriptionControllers.createSubscription);
+router.get('/subscribe', SubscriptionControllers.getSubscription);
 
 export const SubscriptionRoutes = router;
