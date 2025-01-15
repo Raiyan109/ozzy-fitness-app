@@ -41,7 +41,12 @@ const getSubscriptionFromDB = async (session_id: string) => {
     return session
 }
 
+const getPortalSessionFromDB = async () => {
+
+}
+
 export const subscriptionService = {
     createSubscriptionIntoDB,
-    getSubscriptionFromDB
+    getSubscriptionFromDB,
+    getPortalSessionFromDB
 };

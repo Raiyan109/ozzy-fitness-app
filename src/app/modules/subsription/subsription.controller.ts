@@ -42,7 +42,21 @@ const getSubscription = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getPortalSession = catchAsync(async (req: Request, res: Response) => {
+
+
+  const result = await subscriptionService.getPortalSessionFromDB()
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription retrieved successfully',
+    data: result,
+  });
+});
+
 export const SubscriptionControllers = {
   createSubscription,
-  getSubscription
+  getSubscription,
+  getPortalSession
 }
