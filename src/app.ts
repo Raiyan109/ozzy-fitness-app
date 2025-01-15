@@ -17,7 +17,8 @@ app.use(Morgan.errorHandler);
 //body parser
 app.use(
   cors({
-    origin: ['*'],
+    origin: ['http://localhost:3000'],
+    // origin: ['*'],
     credentials: true,
   })
 );
