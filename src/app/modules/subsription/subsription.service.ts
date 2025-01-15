@@ -3,7 +3,6 @@ import { stripe } from "../../../shared/stripe";
 
 const createSubscriptionIntoDB = async (plan: string) => {
     let priceId: string;
-    console.log(plan, 'plan');
 
     switch (plan) {
         case 'starter':
@@ -41,8 +40,13 @@ const getSubscriptionFromDB = async (session_id: string) => {
     return session
 }
 
-const getPortalSessionFromDB = async () => {
-
+const getPortalSessionFromDB = async (customerId: string) => {
+    const portalSession = await stripe.billingPortal.sessions.create({
+        customer: customerId,
+        return_url: `${config.base_url}/`
+    })
+    console.log(portalSession);
+    return portalSession.url
 }
 
 export const subscriptionService = {

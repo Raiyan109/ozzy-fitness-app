@@ -43,9 +43,9 @@ const getSubscription = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getPortalSession = catchAsync(async (req: Request, res: Response) => {
+  const { customerId } = req.params
 
-
-  const result = await subscriptionService.getPortalSessionFromDB()
+  const result = await subscriptionService.getPortalSessionFromDB(customerId)
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
