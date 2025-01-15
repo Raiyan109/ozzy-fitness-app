@@ -3,7 +3,7 @@ import { PlanController } from './plan.controller';
 
 const router = express.Router();
 
-// router.post('/create-plan', PlanController.createPlanToDB);
+router.post('/plan', PlanController.createPlan);
 
 // router.patch('/update/:planId', PlanController.updatePlan);
 
