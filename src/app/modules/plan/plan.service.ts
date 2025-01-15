@@ -3,6 +3,7 @@ import ApiError from "../../../errors/ApiError";
 import { Plan } from "./plan.model";
 import { IPlan } from "./plan.interface";
 import { stripe } from "../../../shared/stripe";
+import { mapInterval } from "./plan.constant";
 
 const createPlanIntoDB = async (payload: Partial<IPlan>) => {
     try {
@@ -76,7 +77,97 @@ const getAllPlansFromDB = async () => {
 };
 
 
+const updatePlanIntoDB = async (
+    planId: string,
+    updates: Partial<IPlan>
+): Promise<IPlan> => {
+    try {
+        // Step 1: Retrieve the existing plan from the database
+        const plan = await Plan.findById(planId);
+        if (!plan) {
+            throw new Error('Plan not found');
+        }
+
+        // Step 2: Update the product in Stripe (if relevant fields are updated)
+        if (updates.name || updates.description) {
+            await stripe.products.update(plan.productId, {
+                name: updates.name || plan.name,
+                description: updates.description || plan.description,
+            });
+        }
+
+        // Step 3: Handle price updates (Stripe does not allow updating unit_amount or interval directly)
+        if (updates.unitAmount || updates.interval) {
+            const stripeInterval = mapInterval(updates.interval || plan.interval); // Map the interval
+
+            // Create a new price if the amount or interval is updated
+            const newPrice = await stripe.prices.create({
+                unit_amount: updates.unitAmount
+                    ? updates.unitAmount * 100
+                    : plan.unitAmount * 100,
+                currency: 'usd',
+                recurring: { interval: stripeInterval },
+                product: plan.productId,
+            });
+
+            updates.priceId = newPrice.id;
+        }
+
+        // Step 4: Update the database
+        const updatedPlan = await Plan.findByIdAndUpdate(planId, updates, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!updatedPlan) {
+            throw new Error('Failed to update plan');
+        }
+
+        return updatedPlan.toObject();
+    } catch (error) {
+        console.error('Error updating plan:', error);
+        throw new Error('Failed to update plan');
+    }
+};
+
+const deletePlanFromDB = async (planId: string) => {
+    try {
+        // Step 1: Find the plan in the database
+        const plan = await Plan.findById(planId);
+
+        if (!plan) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Plan not found');
+        }
+
+        // Step 2: Update the Stripe Price to make it inactive
+        const stripePriceId = plan.priceId; // Ensure `priceId` exists in your Plan schema
+        const updatedPrice = await stripe.prices.update(stripePriceId, {
+            active: false, // Mark the price as inactive
+        });
+
+        console.log('Price deactivated in Stripe:', updatedPrice);
+
+        // Step 3: Delete the plan from the database
+        await Plan.findByIdAndDelete(planId);
+
+        return { message: 'Plan deleted successfully' };
+    } catch (error) {
+        console.error('Error deleting plan:', error);
+
+        if (error instanceof ApiError) {
+            throw error; // Rethrow known API errors
+        }
+
+        throw new ApiError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            'Failed to delete plan'
+        );
+    }
+};
+
 export const PlanService = {
     getAllPlansFromDB,
-    createPlanIntoDB
+    createPlanIntoDB,
+    updatePlanIntoDB,
+    deletePlanFromDB
 };

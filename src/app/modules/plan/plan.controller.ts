@@ -23,7 +23,30 @@ const getAllPlan = catchAsync(async (req, res) => {
     });
 });
 
+const updatePlan = catchAsync(async (req, res) => {
+    const result = await PlanService.updatePlanIntoDB(req.params.planId, req.body);
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Plan updated successfully',
+        data: result,
+    });
+});
+
+const deletePlan = catchAsync(async (req, res) => {
+    const result = await PlanService.deletePlanFromDB(req.params.planId);
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Plan deleted successfully',
+        data: result,
+    });
+});
+
+
 export const PlanController = {
     createPlan,
     getAllPlan,
+    updatePlan,
+    deletePlan
 };

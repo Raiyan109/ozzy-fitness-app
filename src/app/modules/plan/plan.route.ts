@@ -5,10 +5,10 @@ const router = express.Router();
 
 router.post('/plan', PlanController.createPlan);
 
-// router.patch('/update/:planId', PlanController.updatePlan);
+router.patch('/update/:planId', PlanController.updatePlan);
 
 router.get('/plans', PlanController.getAllPlan);
 
-// router.delete('/delete/:planId', PlanController.deletePlan);
+router.delete('/delete/:planId', PlanController.deletePlan);
 
 export const PlanRoutes = router;
